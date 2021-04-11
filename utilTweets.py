@@ -8,7 +8,8 @@ data = pd.read_csv(ticker_path)
 TweetsCollection = {}
 ll = 0
 for index, row in data.iterrows():
-
+    if(index <= 112):
+        continue
     ticker = row[0]
     name = row[1]
     QUERY = ticker + ' ' + name
@@ -29,15 +30,14 @@ for index, row in data.iterrows():
     trail.Hide_output = True
     twint.run.Search(trail)
     print(len(tweets))
-    if len(tweets) > 20:
-        tweets = sorted(tweets, key = lambda x: x.likes_count)
-        MIN_LIKES = tweets[-20].likes_count
-        if len(tweets) > 50:
-            VERIFIED = True
+    if len(tweets) > 15:
+        MIN_LIKES = 20
+        VERIFIED = True
         if len(tweets) > 200:
-            QUERY += 'stock '
+            QUERY = QUERY + ' stock'
     #break
-
+    if len(name) <= 3 and len(ticker) <=3:
+        QUERY = QUERY + ' stock'
     print(index + 1, ': ', QUERY, MIN_LIKES, VERIFIED)
 
     c = twint.Config()
